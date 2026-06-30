@@ -5,6 +5,7 @@
 A full-stack application where customers open support conversations and receive AI-generated, context-aware replies. Support admins configure the assistant's behaviour and manage escalated conversations — all without touching source code.
 
 **Live demo**: Deploy instructions below  
+**Repository**: https://github.com/riteshyadavaffine/capstone_project  
 **Test credentials**:
 - Customer: `customer@supportpilot.dev` / `Password123!`
 - Admin: `admin@supportpilot.dev` / `AdminPass123!`
@@ -89,7 +90,7 @@ CLIENT_ORIGIN=http://localhost:5173
 npm run test -w @supportpilot/server
 ```
 
-Expected output: 9 tests passing across 4 test files.
+Expected output: 12 tests passing across 4 test files.
 
 ### 4. Start development servers
 Open two terminals:
@@ -157,11 +158,11 @@ cd apps/server
 npm test
 ```
 
-**Test coverage**: 4 test files, 9 tests
+**Test coverage**: 4 test files, 12 tests
 - `tests/authService.test.ts` — login success and failure
 - `tests/conversationService.test.ts` — create conversation, escalation via keywords
 - `tests/adminService.test.ts` — read and update admin settings
-- `tests/api.test.ts` — full API integration: login, conversation + message, settings update
+- `tests/api.test.ts` — full API integration: login, conversation + message, settings update, auth guard, role guard, auto-escalation
 
 ---
 
