@@ -3,7 +3,7 @@
 ## Project: SupportPilot — AI Customer Support Assistant
 ## Completed: 2026-06-30
 ## Deployed URL: [Add Railway/Render URL after deployment]
-## Repository: [Add GitHub URL after first push]
+## Repository: https://github.com/riteshyadavaffine/capstone_project
 
 ---
 
@@ -18,7 +18,7 @@
 | Code Organisation | 4 | Monorepo with clear app boundaries; backend split into routes/services/middleware/utils; frontend split into pages/components/hooks/services | apps/server/src/, apps/client/src/ |
 | Error Handling | 4 | Single errorHandler middleware catches Zod, HttpError, and unknown errors; all messages are plain language; frontend ErrorBanner on every async path | apps/server/src/middleware/errorHandler.ts, apps/client/src/components/ErrorBanner.tsx |
 | Security | 3 | bcrypt cost 10, JWT with 12h expiry, Zod validation on all inputs, role-based guards, CORS restricted, no env in git; missing: rate limiting and CSRF headers | apps/server/src/middleware/auth.ts, apps/server/.env.example |
-| Testing | 3 | 9 passing tests across 4 files: 3 unit test files + 1 integration test file with 3 endpoints covered; no frontend tests | apps/server/tests/ |
+| Testing | 3 | 12 passing tests across 4 files: 3 unit test files + 1 integration test file with 6 endpoints covered (including role guard and auto-escalation edge cases); no frontend tests | apps/server/tests/ |
 | Documentation | 4 | README with setup, env vars, deployment guide, test instructions; full API reference docs (11 endpoints); inline comments on complex functions | README.md, deliverables/09-api-docs.md |
 | Deployment | 3 | Application runs cleanly locally; deployment instructions documented for Railway + Vercel; live URL pending final push | README.md (Deployment section) |
 | Debugging Recovery | 4 | 3 documented failures with pattern names (Environment Setup Failure, Hallucinated API/Package, Context Lost in Closure); each with root cause and systematic recovery | deliverables/10-debugging-journal.md |
