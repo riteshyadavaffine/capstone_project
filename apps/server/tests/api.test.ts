@@ -59,5 +59,37 @@ describe('api integration', () => {
     expect(response.status).toBe(200);
     expect(response.body.settings.supportEmail).toBe('updated@supportpilot.dev');
   });
+
+  it('rejects unauthenticated requests with a plain-language message', async () => {
+    const response = await request(app).get('/api/conversations');
+    expect(response.status).toBe(401);
+    expect(response.body.message).toContain('sign in');
+  });
+
+  it('blocks a customer from accessing admin settings', async () => {
+    const token = await loginAs('customer@supportpilot.dev', 'Password123!');
+    const response = await request(app)
+      .get('/api/admin/settings')
+      .set('Authorization', `Bearer ${token}`);
+    expect(response.status).toBe(403);
+    expect(response.body.message).toContain('access');
+  });
+
+  it('auto-escalates a conversation when an escalation keyword is sent', async () => {
+    const token = await loginAs('customer@supportpilot.dev', 'Password123!');
+
+    const createResponse = await request(app)
+      .post('/api/conversations')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ subject: 'Billing issue' });
+
+    const messageResponse = await request(app)
+      .post(`/api/conversations/${createResponse.body.conversation.id}/messages`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ content: 'I need a refund immediately.' });
+
+    expect(messageResponse.body.conversation.escalated).toBe(true);
+    expect(messageResponse.body.conversation.status).toBe('escalated');
+  });
 });
 
