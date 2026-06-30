@@ -22,6 +22,14 @@ function fallbackReply(conversation: Conversation, settings: Settings, latestMes
   return `${settings.systemPrompt}\n\nBased on your message, the fastest path is to gather the key details, confirm the expected outcome, and provide one clear next action. If you would like a specialist to step in, say “human support” and I will escalate the conversation.`;
 }
 
+/**
+ * Generates a support reply using the Anthropic Claude API.
+ * Falls back to a deterministic keyword-matched reply when ANTHROPIC_API_KEY is absent,
+ * so the application is fully functional without a paid API key.
+ *
+ * Prompt strategy: include only the last 8 messages to avoid context window overflow
+ * and to keep token costs low during demos.
+ */
 export async function generateAssistantReply(conversation: Conversation, settings: Settings, latestMessage: string) {
   if (!client) {
     return fallbackReply(conversation, settings, latestMessage);

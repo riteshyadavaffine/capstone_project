@@ -12,12 +12,20 @@ function matchesConversationAccess(conversation: Conversation, user: SafeUser) {
   return user.role === 'admin' || conversation.userId === user.id;
 }
 
+/**
+ * Returns all conversations the user is allowed to see, sorted newest-updated first.
+ * Admins see all conversations; customers see only their own.
+ */
 export function listConversations(user: SafeUser) {
   return db.data.conversations
     .filter((conversation) => matchesConversationAccess(conversation, user))
     .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
 }
 
+/**
+ * Creates a new conversation owned by the given user.
+ * Writes to the database immediately so the item is available on next list call.
+ */
 export function createConversation(user: SafeUser, subject: string) {
   const conversation: Conversation = {
     id: nanoid(),
@@ -51,6 +59,14 @@ function shouldEscalate(content: string) {
   return keywords.some((keyword) => lower.includes(keyword));
 }
 
+/**
+ * Appends the user message, runs escalation keyword check, generates an AI reply,
+ * appends the assistant message, updates the conversation status, and persists everything.
+ *
+ * Status transitions:
+ *   - keyword match  → escalated = true, status = "escalated"
+ *   - no match       → status = "waiting" (unless already resolved)
+ */
 export async function addMessage(user: SafeUser, conversationId: string, content: string) {
   const conversation = getConversationById(user, conversationId);
 
