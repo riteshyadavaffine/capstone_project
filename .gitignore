@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+apps/server/data/*.json
+!.env.example
+.idea/
+.vite/
+
