@@ -1,5 +1,6 @@
 import { JSONFilePreset } from 'lowdb/node';
 import bcrypt from 'bcryptjs';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { DatabaseSchema } from './types.js';
@@ -7,6 +8,8 @@ import type { DatabaseSchema } from './types.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dbPath = path.resolve(__dirname, '../data/db.json');
+
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
 export const defaultData: DatabaseSchema = {
   users: [
