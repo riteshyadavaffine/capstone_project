@@ -129,10 +129,10 @@ Open [http://localhost:5173](http://localhost:5173).
 1. Import the repository into Vercel
 2. Set **Root Directory** to `apps/client`
 3. Add an environment variable:
-   - `VITE_API_BASE` → your Railway backend URL (if you update `api.ts` to use it)
+   - `VITE_API_BASE` → your Railway backend URL (for example `https://your-backend.railway.app/api`)
 4. Vercel auto-runs `npm run build`
 
-> **Note**: The Vite proxy (`/api → localhost:4000`) only applies in development. For production, point `API_BASE` in `apps/client/src/services/api.ts` to the Railway URL, or configure Vercel rewrites.
+> **Note**: In development, the client defaults to `/api` so Vite proxying still works. In production, set `VITE_API_BASE` to your backend `/api` URL.
 
 ---
 

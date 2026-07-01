@@ -1,6 +1,7 @@
 import type { AuthState, Conversation, Settings, User } from '../types';
 
-const API_BASE = '/api';
+const configuredBase = import.meta.env.VITE_API_BASE?.trim();
+const API_BASE = configuredBase ? configuredBase.replace(/\/$/, '') : '/api';
 
 export class ApiError extends Error {
   constructor(message: string) {
