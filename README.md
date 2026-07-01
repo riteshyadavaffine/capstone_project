@@ -4,7 +4,9 @@
 
 A full-stack application where customers open support conversations and receive AI-generated, context-aware replies. Support admins configure the assistant's behaviour and manage escalated conversations — all without touching source code.
 
-**Live demo**: Deploy instructions below  
+**Live demo**: https://capstone-project-client-bcnt.vercel.app
+
+**Live demo**: Deploy instructions below
 **Repository**: https://github.com/riteshyadavaffine/capstone_project  
 **Test credentials**:
 - Customer: `customer@supportpilot.dev` / `Password123!`

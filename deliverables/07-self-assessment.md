@@ -2,7 +2,7 @@
 
 ## Project: SupportPilot — AI Customer Support Assistant
 ## Completed: 2026-06-30
-## Deployed URL: [Add Railway/Render URL after deployment]
+## Deployed URL: https://capstone-project-client-bcnt.vercel.app
 ## Repository: https://github.com/riteshyadavaffine/capstone_project
 
 ---
