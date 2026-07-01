@@ -16,6 +16,11 @@ export function createApp() {
   );
   app.use(express.json());
 
+  // Keep '/' healthy for platform defaults that probe the root path.
+  app.get('/', (_req, res) => {
+    res.status(200).send('SupportPilot API is running');
+  });
+
   app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
