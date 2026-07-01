@@ -8,7 +8,8 @@
   "scripts": {
     "install:all": "npm install --workspaces",
     "dev": "concurrently \"npm run dev -w @supportpilot/server\" \"npm run dev -w @supportpilot/client\"",
-    "build": "npm run build -w @supportpilot/server && npm run build -w @supportpilot/client",
+    "build": "npm run build -w @supportpilot/server",
+    "start": "npm run start -w @supportpilot/server",
     "test": "npm run test -w @supportpilot/server",
     "lint": "npm run lint -w @supportpilot/server && npm run lint -w @supportpilot/client"
   },
