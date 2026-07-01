@@ -2,8 +2,6 @@ import Anthropic from '@anthropic-ai/sdk';
 import { env } from '../env.js';
 import type { Conversation, Settings } from '../types.js';
 
-const client = env.anthropicApiKey ? new Anthropic({ apiKey: env.anthropicApiKey }) : null;
-
 function fallbackReply(conversation: Conversation, settings: Settings, latestMessage: string) {
   const lower = latestMessage.toLowerCase();
   const opener = 'Thanks for reaching out. Here are the best next steps based on what you shared:';
@@ -32,7 +30,8 @@ function fallbackReply(conversation: Conversation, settings: Settings, latestMes
  * and to keep token costs low during demos.
  */
 export async function generateAssistantReply(conversation: Conversation, settings: Settings, latestMessage: string) {
-  if (!client) {
+  const apiKey = env.anthropicApiKey?.trim();
+  if (!apiKey || !apiKey.startsWith('sk-ant-')) {
     return fallbackReply(conversation, settings, latestMessage);
   }
 
@@ -42,6 +41,7 @@ export async function generateAssistantReply(conversation: Conversation, setting
     .join('\n');
 
   try {
+    const client = new Anthropic({ apiKey });
     const completion = await client.messages.create({
       model: 'claude-3-5-sonnet-latest',
       max_tokens: 300,
