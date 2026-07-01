@@ -78,10 +78,12 @@ export async function addMessage(user: SafeUser, conversationId: string, content
   });
 
   const needsEscalation = shouldEscalate(content);
+  const wasResolved = conversation.status === 'resolved';
+
   if (needsEscalation) {
     conversation.escalated = true;
     conversation.status = 'escalated';
-  } else if (conversation.status === 'resolved') {
+  } else if (wasResolved) {
     conversation.status = 'open';
   }
 
@@ -94,7 +96,7 @@ export async function addMessage(user: SafeUser, conversationId: string, content
   });
   conversation.updatedAt = now();
 
-  if (!needsEscalation && conversation.status !== 'resolved') {
+  if (!needsEscalation && !wasResolved) {
     conversation.status = 'waiting';
   }
 
