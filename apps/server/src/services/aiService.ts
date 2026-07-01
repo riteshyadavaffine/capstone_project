@@ -1,4 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk';import { env } from '../env.js';
+import Anthropic from '@anthropic-ai/sdk';
+import { env } from '../env.js';
 import type { Conversation, Settings } from '../types.js';
 
 const client = env.anthropicApiKey ? new Anthropic({ apiKey: env.anthropicApiKey }) : null;
@@ -40,19 +41,24 @@ export async function generateAssistantReply(conversation: Conversation, setting
     .map((message) => `${message.role.toUpperCase()}: ${message.content}`)
     .join('\n');
 
-  const completion = await client.messages.create({
-    model: 'claude-3-5-sonnet-latest',
-    max_tokens: 300,
-    system: settings.systemPrompt,
-    messages: [
-      {
-        role: 'user',
-        content: `Conversation so far:\n${transcript}\n\nLatest user message:\n${latestMessage}\n\nReply with concise, actionable support guidance and avoid technical jargon.`,
-      },
-    ],
-  });
+  try {
+    const completion = await client.messages.create({
+      model: 'claude-3-5-sonnet-latest',
+      max_tokens: 300,
+      system: settings.systemPrompt,
+      messages: [
+        {
+          role: 'user',
+          content: `Conversation so far:\n${transcript}\n\nLatest user message:\n${latestMessage}\n\nReply with concise, actionable support guidance and avoid technical jargon.`,
+        },
+      ],
+    });
 
-  const firstBlock = completion.content.find((block) => block.type === 'text');
-  return firstBlock?.text ?? fallbackReply(conversation, settings, latestMessage);
+    const firstBlock = completion.content.find((block) => block.type === 'text');
+    return firstBlock?.text ?? fallbackReply(conversation, settings, latestMessage);
+  } catch (error) {
+    console.error('Anthropic API request failed, using fallback response.', error);
+    return fallbackReply(conversation, settings, latestMessage);
+  }
 }
 
