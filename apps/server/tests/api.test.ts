@@ -25,6 +25,12 @@ describe('api integration', () => {
     expect(response.body.user.role).toBe('customer');
   });
 
+  it('returns healthy status from the health endpoint', async () => {
+    const response = await request(app).get('/api/health');
+    expect(response.status).toBe(200);
+    expect(response.body.status).toBe('ok');
+  });
+
   it('creates a conversation and appends a reply', async () => {
     const token = await loginAs('customer@supportpilot.dev', 'Password123!');
 
@@ -64,6 +70,17 @@ describe('api integration', () => {
     const response = await request(app).get('/api/conversations');
     expect(response.status).toBe(401);
     expect(response.body.message).toContain('sign in');
+  });
+
+  it('returns a plain-language message for validation errors', async () => {
+    const token = await loginAs('customer@supportpilot.dev', 'Password123!');
+    const response = await request(app)
+      .post('/api/conversations')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ subject: 'x' });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toContain('incomplete or invalid');
   });
 
   it('blocks a customer from accessing admin settings', async () => {
