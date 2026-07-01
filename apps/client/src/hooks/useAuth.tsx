@@ -15,7 +15,16 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [auth, setAuthState] = useState<AuthState | null>(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as AuthState) : null;
+    if (!raw) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(raw) as AuthState;
+    } catch {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
   });
   const [isBootstrapping, setIsBootstrapping] = useState(true);
 
